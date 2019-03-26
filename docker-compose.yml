@@ -12,7 +12,7 @@ services:
     ports:
       - 3306:3306
     networks:
-      event-sourcing-poc:
+      tcc:
         ipv4_address: 10.5.0.2
   mq:
     image: rabbitmq:3.5.6-management
@@ -26,11 +26,11 @@ services:
       RABBITMQ_DEFAULT_USER: "admin"
       RABBITMQ_DEFAULT_PASS: "admin"
     networks:
-      event-sourcing-poc:
+      tcc:
         ipv4_address: 10.5.0.3
 
 networks:
-  event-sourcing-poc:
+  tcc:
     driver: bridge
     ipam:
      config:
