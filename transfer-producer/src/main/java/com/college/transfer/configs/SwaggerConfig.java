@@ -29,19 +29,11 @@ public class SwaggerConfig {
 
         ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
 
-        apiInfoBuilder.title("Event Producer");
-        apiInfoBuilder.description("Create Events to Event Store.");
+        apiInfoBuilder.title("Transfer Producer");
+        apiInfoBuilder.description("Create transfers events.");
         apiInfoBuilder.version("1.0");
         apiInfoBuilder.license("Licence - Open Source");
-        apiInfoBuilder.contact(contact());
 
         return apiInfoBuilder;
-    }
-
-    private Contact contact() {
-        return new Contact(
-                "Gabriel Santos dos Passos",
-                "https://blogcoreengineering.wordpress.com/",
-                "gabrielsantos45725@gmail.com");
     }
 }

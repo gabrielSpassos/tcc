@@ -14,17 +14,17 @@ import java.time.ZonedDateTime;
 @Setter
 public class TransferDTO {
 
-    @ApiModelProperty(value = "")
-    @NotNull(message = "")
+    @ApiModelProperty(value = "Origin account number")
+    @NotNull(message = "The origin account number must be informed")
     private String originAccountNumber;
-    @ApiModelProperty(value = "")
-    @NotNull(message = "")
+    @ApiModelProperty(value = "Destiny account number")
+    @NotNull(message = "The destiny account number must be informed")
     private String destinyAccountNumber;
-    @ApiModelProperty(value = "")
-    @NotNull(message = "")
+    @ApiModelProperty(value = "Transfer amount")
+    @NotNull(message = "The amount to transfer must be informed")
     private BigDecimal amount;
-    @ApiModelProperty(value = "")
-    @NotNull(message = "")
+    @ApiModelProperty(value = "Transfer date time zone")
+    @NotNull(message = "The transfer date time zone must be informed")
     private ZonedDateTime transferDateTime;
 
     @Override

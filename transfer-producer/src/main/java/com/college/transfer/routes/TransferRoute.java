@@ -2,6 +2,7 @@ package com.college.transfer.routes;
 
 import com.college.transfer.configs.RabbitConfig;
 import com.college.transfer.controllers.dto.TransferDTO;
+import com.college.transfer.model.TransferModel;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -34,7 +35,7 @@ public class TransferRoute extends RouteBuilder {
     }
 
     private Boolean isTransferValid(Exchange exchange) {
-        TransferDTO event = exchange.getIn().getBody(TransferDTO.class);
+        TransferModel event = exchange.getIn().getBody(TransferModel.class);
         return Optional.ofNullable(event).isPresent();
     }
 
@@ -50,8 +51,8 @@ public class TransferRoute extends RouteBuilder {
                 .queryParam("autoDelete", false)
                 .queryParam("autoAck", false)
                 .queryParam("deadLetterExchangeType", "fanout")
-                .queryParam("deadLetterExchange", "events.dead")
-                .queryParam("deadLetterQueue", "dead.events")
+                .queryParam("deadLetterExchange", "transfers.dead")
+                .queryParam("deadLetterQueue", "dead.transfers")
                 .queryParam("deadLetterRoutingKey", "#")
                 .build()
                 .toString();
