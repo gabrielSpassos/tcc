@@ -45,7 +45,7 @@ public class TransferRoute extends RouteBuilder {
                 .scheme("rabbitmq")
                 .host(getRabbitHost())
                 .queryParam("queue", rabbitConfig.getRabbitQueue())
-                .queryParam("exchangeType", "direct")
+                .queryParam("exchangeType", "topic")
                 .queryParam("username", rabbitConfig.getRabbitUser())
                 .queryParam("password", rabbitConfig.getRabbitPass())
                 .queryParam("autoDelete", false)
