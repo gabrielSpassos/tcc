@@ -1,0 +1,14 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: transfer-consumer
+
+rabbit:
+  url: 'localhost'
+  port: '5672'
+  exchange: 'transfer-events'
+  queue: transfers
+  user: admin
+  pass: admin
