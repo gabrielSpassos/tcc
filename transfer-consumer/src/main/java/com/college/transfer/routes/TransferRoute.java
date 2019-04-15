@@ -1,47 +1,99 @@
 package com.college.transfer.routes;
 
-import com.college.transfer.configs.RabbitConfig;
-import com.college.transfer.dto.TransferDTO;
-import org.apache.camel.LoggingLevel;
+import com.college.transfer.entities.AccountEntity;
+import com.college.transfer.entities.CustomerEntity;
+import com.college.transfer.entities.TransferEntity;
+import com.college.transfer.factories.TransferEntityFactory;
+import com.college.transfer.model.TransferModel;
+import com.college.transfer.repositories.TransferRepository;
+import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.model.dataformat.JsonLibrary;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Objects;
 
 @Component
 public class TransferRoute extends RouteBuilder {
 
+    private final TransferEntityFactory transferEntityFactory;
+    private final TransferRepository transferRepository;
+
+    @Autowired
+    public TransferRoute(TransferEntityFactory transferEntityFactory, TransferRepository transferRepository) {
+        this.transferEntityFactory = transferEntityFactory;
+        this.transferRepository = transferRepository;
+    }
+
     @Override
     public void configure() {
-        from(getTransferRabbitUri())
-                .routeId("transfer-consumer")
-                .unmarshal()
-                .json(JsonLibrary.Jackson, TransferDTO.class)
-                .log(LoggingLevel.INFO, "Body: ${body}.")
+        from("direct:transferAmount")
+                .routeId("transferAmount")
+                .process(this::fetchOriginAccountNumber)
+                .to("direct:getAccount")
+                .validate(this::isOriginAccountExistent)
+                .process(this::fetchDestinyAccountNumber)
+                .to("direct:getAccount")
+                .validate(this::isDestinyAccountExistent)
+                .to("direct:getCustomers")
+                .to("direct:transferAmountBetweenAccounts")
+                .process(this::buildTransferEntity)
+                .process(this::saveTransfer)
                 .end();
+
     }
 
-    private String getTransferRabbitUri() {
-        return UriComponentsBuilder
-                .newInstance()
-                .scheme("rabbitmq")
-                .host(getRabbitHost())
-                .queryParam("queue", RabbitConfig.QUEUE)
-                .queryParam("exchangeType", "topic")
-                .queryParam("username", RabbitConfig.USER)
-                .queryParam("password", RabbitConfig.PASS)
-                .queryParam("autoDelete", false)
-                .queryParam("autoAck", false)
-                .queryParam("automaticRecoveryEnabled", true)
-                .queryParam("deadLetterExchangeType", "fanout")
-                .queryParam("deadLetterExchange", "transfers.dead")
-                .queryParam("deadLetterQueue", "dead.transfers")
-                .queryParam("deadLetterRoutingKey", "#")
-                .build()
-                .toString();
+    private void fetchOriginAccountNumber(Exchange exchange) {
+        TransferModel transferModel = exchange.getIn().getBody(TransferModel.class);
+        exchange.setProperty("accountNumber", transferModel.getOriginAccountNumber());
     }
 
-    private String getRabbitHost() {
-        return String.format("%s:%s/%s", RabbitConfig.URL, RabbitConfig.PORT, RabbitConfig.EXCHANGE);
+    private Boolean isOriginAccountExistent(Exchange exchange) {
+        return isAccountExistent("originAccount", exchange);
+    }
+
+    private void fetchDestinyAccountNumber(Exchange exchange) {
+        TransferModel transferModel = exchange.getIn().getBody(TransferModel.class);
+        exchange.setProperty("accountNumber", transferModel.getDestinyAccountNumber());
+    }
+
+    private Boolean isDestinyAccountExistent(Exchange exchange) {
+        return isAccountExistent("destinyAccount", exchange);
+    }
+
+    private Boolean isAccountExistent(String accountType, Exchange exchange) {
+        AccountEntity accountEntity = exchange.getProperty("accountEntity", AccountEntity.class);
+        if(Objects.isNull(accountEntity)) {
+            return false;
+        }
+        exchange.setProperty(accountType, accountEntity);
+        return true;
+    }
+
+    private void buildTransferEntity(Exchange exchange) {
+        AccountEntity originAccount = exchange.getProperty("originAccount", AccountEntity.class);
+        CustomerEntity originCustomer = exchange.getProperty("originCustomerEntity", CustomerEntity.class);
+        AccountEntity destinyAccount = exchange.getProperty("destinyAccount", AccountEntity.class);
+        CustomerEntity destinyCustomer = exchange.getProperty("destinyCustomerEntity", CustomerEntity.class);
+
+        TransferEntity transferEntity = transferEntityFactory.buildTransferEntity(
+                originCustomer.getId(),
+                originAccount.getId(),
+                destinyCustomer.getId(),
+                destinyAccount.getId(),
+                getCurrentDate()
+        );
+        exchange.setProperty("transferEntity", transferEntity);
+    }
+
+    private void saveTransfer(Exchange exchange) {
+        TransferEntity transferEntity = exchange.getProperty("transferEntity", TransferEntity.class);
+        transferRepository.save(transferEntity);
+    }
+
+    private ZonedDateTime getCurrentDate() {
+        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
     }
 }

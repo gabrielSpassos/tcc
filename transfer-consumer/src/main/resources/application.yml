@@ -4,6 +4,29 @@ server:
 spring:
   application:
     name: transfer-consumer
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/BANK
+    password: "password"
+    username: root
+    maxActive: 10
+    initialSize: 1
+    minIdle: 1
+    maxIdle: 1
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    jpa:
+      generate-ddl: false
+      properties:
+        hibernate:
+          ddl-auto: none
+          dialect: org.hibernate.dialect.MySQL5Dialect
+      hibernate:
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    hibernate:
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    show-sql: true
 
 rabbit:
   url: 'localhost'

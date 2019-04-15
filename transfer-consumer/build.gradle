@@ -30,10 +30,13 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.apache.camel:camel-spring-boot-starter:2.23.1'
 	implementation 'org.apache.camel:camel-rabbitmq:2.23.1'
 	implementation 'org.apache.camel:camel-jackson:2.23.1'
 	implementation 'org.apache.commons:commons-lang3:3.8.1'
+	implementation 'mysql:mysql-connector-java'
+	implementation 'org.modelmapper:modelmapper:0.7.7'
 	implementation "org.projectlombok:lombok:${LOMBOK_VERSION}"
 	testAnnotationProcessor "org.projectlombok:lombok:${LOMBOK_VERSION}"
 	testCompileOnly "org.projectlombok:lombok:${LOMBOK_VERSION}"
