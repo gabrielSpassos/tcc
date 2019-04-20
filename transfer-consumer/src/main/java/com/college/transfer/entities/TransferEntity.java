@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Data
@@ -31,8 +32,12 @@ public class TransferEntity {
     private Integer originAccountId;
     @Column(name = "DESTINY_ACCOUNT_ID", nullable = false)
     private Integer destinyAccountId;
+    @Column(name = "TRANSFER_DATETIME", nullable = false)
+    private ZonedDateTime dateTime;
+    @Column(name = "TRANSFER_AMOUNT", nullable = false)
+    private BigDecimal amount;
     @Column(name = "REGISTER_DATETIME")
-    private ZonedDateTime registerDate;
+    private ZonedDateTime registerDateTime;
 
     @Override
     public String toString() {

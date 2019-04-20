@@ -73,6 +73,7 @@ public class TransferRoute extends RouteBuilder {
     }
 
     private void buildTransferEntity(Exchange exchange) {
+        TransferModel transferModel = exchange.getIn().getBody(TransferModel.class);
         AccountEntity originAccount = exchange.getProperty("originAccount", AccountEntity.class);
         CustomerEntity originCustomer = exchange.getProperty("originCustomerEntity", CustomerEntity.class);
         AccountEntity destinyAccount = exchange.getProperty("destinyAccount", AccountEntity.class);
@@ -83,6 +84,8 @@ public class TransferRoute extends RouteBuilder {
                 originAccount.getId(),
                 destinyCustomer.getId(),
                 destinyAccount.getId(),
+                transferModel.getTransferDateTime(),
+                transferModel.getAmount(),
                 getCurrentDate()
         );
         exchange.setProperty("transferEntity", transferEntity);

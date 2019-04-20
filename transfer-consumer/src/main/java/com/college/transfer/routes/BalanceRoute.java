@@ -41,7 +41,7 @@ public class BalanceRoute extends RouteBuilder {
         AccountEntity destinyAccount = exchange.getProperty("destinyAccount", AccountEntity.class);
 
         originAccount.setBalance(originAccount.getBalance().subtract(transferModel.getAmount()));
-        destinyAccount.setBalance(originAccount.getBalance().add(transferModel.getAmount()));
+        destinyAccount.setBalance(destinyAccount.getBalance().add(transferModel.getAmount()));
 
         exchange.setProperty("originAccount", originAccount);
         exchange.setProperty("destinyAccount", destinyAccount);

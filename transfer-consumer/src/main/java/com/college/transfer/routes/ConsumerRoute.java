@@ -30,6 +30,7 @@ public class ConsumerRoute extends RouteBuilder {
                 .json(JsonLibrary.Jackson, TransferDTO.class)
                 .log(LoggingLevel.INFO, "Body: ${body}.")
                 .process(this::convertBody)
+                .to("direct:transferAmount")
                 .end();
     }
 
