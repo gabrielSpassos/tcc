@@ -23,6 +23,8 @@ public class CustomerEntity {
     @Column(name = "ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "NAME", nullable = false)
+    private String name;
     @Column(name = "TAX_ID", nullable = false)
     private String taxId;
     @Column(name = "BIRTHDAY")
