@@ -51,4 +51,5 @@ dependencies {
 	testAnnotationProcessor "org.projectlombok:lombok:${LOMBOK_VERSION}"
 	testCompileOnly "org.projectlombok:lombok:${LOMBOK_VERSION}"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.apache.camel:camel-test-spring:2.22.1'
 }

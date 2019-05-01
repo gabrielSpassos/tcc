@@ -31,7 +31,7 @@ public class TransferConsumer {
             value = @Queue(value = "${rabbitmq.queue.transfers}"),
             exchange = @Exchange(value = "${rabbitmq.exchange.name}", type = "${rabbitmq.exchange.type}"),
             key = "${rabbitmq.exchange.key}"))
-    public void consumeGatewayMasterCardTransactions(@Payload byte[] message) {
+    public void consumeTransfers(@Payload byte[] message) {
         try {
             TransferDTO transferDTO = objectMapper.readValue(message, TransferDTO.class);
             logger.info("Mensagem encontrada: {}", transferDTO);

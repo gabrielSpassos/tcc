@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -15,7 +14,7 @@ public class TransferDTO {
     private String originAccountNumber;
     private String destinyAccountNumber;
     private BigDecimal amount;
-    private ZonedDateTime transferDateTime;
+    //private ZonedDateTime transferDateTime;
 
     @Override
     public String toString() {
