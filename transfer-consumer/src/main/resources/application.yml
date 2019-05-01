@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: transfer-consumer
+  rabbitmq:
+    host: 'localhost'
+    virtual-host: '/'
+    username: 'admin'
+    password: 'admin'
   datasource:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/BANK
@@ -28,10 +33,10 @@ spring:
     naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
   show-sql: true
 
-rabbit:
-  url: 'localhost'
-  port: '5672'
-  exchange: 'transfer-events'
-  queue: transfers
-  user: admin
-  pass: admin
+rabbitmq:
+  exchange:
+    name: 'transfers-events'
+    type: 'topic'
+    key: '#'
+  queue:
+    transfers: 'transfers'

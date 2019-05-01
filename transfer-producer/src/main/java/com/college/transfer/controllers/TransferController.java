@@ -2,13 +2,13 @@ package com.college.transfer.controllers;
 
 import com.college.transfer.controllers.dto.TransferDTO;
 import com.college.transfer.model.TransferModel;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.camel.ProducerTemplate;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,12 +22,12 @@ import java.util.stream.Stream;
 public class TransferController extends BaseVersion {
 
     private ProducerTemplate producerTemplate;
-    private ModelMapper modelMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    public TransferController(ProducerTemplate producerTemplate, ModelMapper modelMapper) {
+    public TransferController(ProducerTemplate producerTemplate, ObjectMapper objectMapper) {
         this.producerTemplate = producerTemplate;
-        this.modelMapper = modelMapper;
+        this.objectMapper = objectMapper;
     }
 
     @PostMapping(value = "/transfers")
@@ -50,10 +50,10 @@ public class TransferController extends BaseVersion {
     }
 
     private TransferModel convertDTOtoModel(TransferDTO transferDTO) {
-        return modelMapper.map(transferDTO, TransferModel.class);
+        return objectMapper.convertValue(transferDTO, TransferModel.class);
     }
 
     private TransferDTO convertModelToDTO(TransferModel transferModel) {
-        return modelMapper.map(transferModel, TransferDTO.class);
+        return objectMapper.convertValue(transferModel, TransferDTO.class);
     }
 }

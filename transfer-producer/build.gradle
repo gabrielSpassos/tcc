@@ -24,9 +24,19 @@ sourceCompatibility = '1.8'
 targetCompatibility = 1.8
 mainClassName = 'com.college.transfer.TransferProducerApplication'
 
+jar {
+	baseName = "${projectName}"
+	version = "${currentVersion}-${currentBuild}"
+}
+
 repositories {
 	mavenCentral()
 }
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '4.10'
+}
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -36,9 +46,13 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'org.modelmapper:modelmapper:0.7.7'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.8'
 	implementation 'org.apache.commons:commons-lang3:3.8.1'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	implementation "org.projectlombok:lombok:${LOMBOK_VERSION}"
 	testAnnotationProcessor "org.projectlombok:lombok:${LOMBOK_VERSION}"
 	testCompileOnly "org.projectlombok:lombok:${LOMBOK_VERSION}"
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testImplementation "org.apache.camel:camel-test-spring:2.22.1"
 }
