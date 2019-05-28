@@ -26,31 +26,31 @@ services:
     networks:
       tcc:
         ipv4_address: 10.5.0.3
-  transfer-producer:
-    container_name: transfer-producer
-    depends_on: 
-      - mysql
-      - mq
-    build:
-      context: ./transfer-producer/
-    ports:
-      - "9000:9000"
-    networks:
-      tcc:
-        ipv4_address: 10.5.0.4
-  transfer-consumer:
-    container_name: transfer-consumer
-    depends_on: 
-      - mysql
-      - mq
-    build:
-      context: ./transfer-consumer/
-    ports:
-      - "9001:9001"
-    networks:
-      tcc:
-        ipv4_address: 10.5.0.5
-        
+  # transfer-producer:
+  #   container_name: transfer-producer
+  #   depends_on:
+  #     - mysql
+  #     - mq
+  #   build:
+  #     context: ./transfer-producer/
+  #   ports:
+  #     - "9000:9000"
+  #   networks:
+  #     tcc:
+  #       ipv4_address: 10.5.0.4
+  # transfer-consumer:
+  #   container_name: transfer-consumer
+  #   depends_on:
+  #     - mysql
+  #     - mq
+  #   build:
+  #     context: ./transfer-consumer/
+  #   ports:
+  #     - "9001:9001"
+  #   networks:
+  #     tcc:
+  #       ipv4_address: 10.5.0.5
+
 networks:
   tcc:
     driver: bridge

@@ -84,7 +84,7 @@ public class TransferRoute extends RouteBuilder {
                 originAccount.getId(),
                 destinyCustomer.getId(),
                 destinyAccount.getId(),
-                ZonedDateTime.now(),
+                transferModel.getTransferDateTime(),
                 transferModel.getAmount(),
                 getCurrentDate()
         );

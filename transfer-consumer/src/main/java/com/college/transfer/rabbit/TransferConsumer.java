@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.camel.ProducerTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -31,9 +32,9 @@ public class TransferConsumer {
             value = @Queue(value = "${rabbitmq.queue.transfers}"),
             exchange = @Exchange(value = "${rabbitmq.exchange.name}", type = "${rabbitmq.exchange.type}"),
             key = "${rabbitmq.exchange.key}"))
-    public void consumeTransfers(@Payload byte[] message) {
+    public void consumeTransfers(Message message) {
         try {
-            TransferDTO transferDTO = objectMapper.readValue(message, TransferDTO.class);
+            TransferDTO transferDTO = objectMapper.readValue(message.getBody(), TransferDTO.class);
             logger.info("Mensagem encontrada: {}", transferDTO);
             producerTemplate.sendBody(
                     "direct:transferAmount",

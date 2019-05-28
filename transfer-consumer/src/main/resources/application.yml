@@ -10,7 +10,7 @@ spring:
     username: 'admin'
     password: 'admin'
   datasource:
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/BANK
     password: "password"
     username: root

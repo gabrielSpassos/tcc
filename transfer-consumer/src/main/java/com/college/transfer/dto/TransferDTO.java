@@ -14,7 +14,7 @@ public class TransferDTO {
     private String originAccountNumber;
     private String destinyAccountNumber;
     private BigDecimal amount;
-    //private ZonedDateTime transferDateTime;
+    private String transferDateTime;
 
     @Override
     public String toString() {
