@@ -1,7 +1,6 @@
 package com.college.transfer.routes;
 
 import com.college.transfer.configs.RabbitConfig;
-import com.college.transfer.model.TransferModel;
 import com.college.transfer.rabbit.EventProducer;
 import com.college.transfer.stub.TransferModelStub;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,10 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.math.BigDecimal;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
