@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.camel.ProducerTemplate;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageProperties;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -34,9 +37,16 @@ public class TransferConsumerTest {
         TransferModel transferModel = transferModelStub.buildTransferModel("12", "001", "002");
         doNothing().when(producerTemplate).sendBody("direct:transferAmount", transferModel);
 
-        transferConsumer.consumeTransfers(Resources.TRANSFER.getBytes());
+        transferConsumer.consumeTransfers(buildMessage(Resources.TRANSFER));
 
         verify(producerTemplate, times(1)).sendBody(eq("direct:transferAmount"), any());
+    }
+
+    private Message buildMessage(String body) {
+        return MessageBuilder
+                .withBody(body.getBytes())
+                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                .build();
     }
 
     public class Resources {
