@@ -1,0 +1,42 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: transfer-consumer
+  rabbitmq:
+    host: 'localhost'
+    virtual-host: '/'
+    username: 'admin'
+    password: 'admin'
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/BANK
+    password: "password"
+    username: root
+    maxActive: 10
+    initialSize: 1
+    minIdle: 1
+    maxIdle: 1
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    generate-ddl: false
+    properties:
+      hibernate:
+        ddl-auto: none
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  hibernate:
+    naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  show-sql: true
+
+rabbitmq:
+  exchange:
+    name: 'transfers-events'
+    type: 'topic'
+    key: '#'
+  queue:
+    transfers: 'transfers'
