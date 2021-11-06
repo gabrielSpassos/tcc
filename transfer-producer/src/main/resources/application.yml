@@ -1,0 +1,16 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: transfer-producer
+  rabbitmq:
+    host: 'localhost'
+    virtual-host: '/'
+    username: 'admin'
+    password: 'admin'
+
+rabbitmq:
+  transfers:
+    exchange: 'transfers-events'
+    routing-key: '#'
